@@ -43,10 +43,6 @@ def predict():
         if 'away' in game:
             current_away = game['away']
         # Далее ваш код, который обрабатывает current_total
-        else:
-            # Если ключ 'total' отсутствует, можно задать значение по умолчанию или обработать иначе
-            logging.warning("'total' отсутствует в одном из объектов")
-            continue
 
     filtered_df = df[(df['homeTeam'] == home_team) & (df['awayTeam'] == away_team)]
 
