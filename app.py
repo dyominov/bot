@@ -16,9 +16,6 @@ df = pd.read_csv(file_path)
 threshold = 2  # Пороговое значение для сравнения экстремумов
 diff_threshold = 10  # Пороговое значение для сравнения с предсказаниями
 
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -71,5 +68,5 @@ def check_extremes_and_predictions(messages, current_value, min_value, max_value
        abs(current_value - predicted_value) > diff_threshold:
         messages.append(f'Текущий {value_name} ({current_value}) выходит за рамки нормы или сильно отличается от предсказанного ({predicted_value}).')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
