@@ -27,22 +27,22 @@ def predict():
         home_team = game['homeTeam']
         if 'total' in game:
             current_total = game['total']
-    else:
-        logging.warning("'total' отсутствует в одном из объектов")
-        continue
-    if 'home' in game:
-        current_home = game['home']
-    else:
-        # Если ключ 'total' отсутствует, можно задать значение по умолчанию или обработать иначе
-        logging.warning("'total' отсутствует в одном из объектов")
-        continue
-    if 'away' in game:
-        current_away = game['away']
+        else:
+            logging.warning("'total' отсутствует в одном из объектов")
+            continue
+        if 'home' in game:
+            current_home = game['home']
+        else:
+            # Если ключ 'total' отсутствует, можно задать значение по умолчанию или обработать иначе
+            logging.warning("'total' отсутствует в одном из объектов")
+            continue
+        if 'away' in game:
+            current_away = game['away']
         # Далее ваш код, который обрабатывает current_total
-    else:
-        # Если ключ 'total' отсутствует, можно задать значение по умолчанию или обработать иначе
-        logging.warning("'total' отсутствует в одном из объектов")
-        continue
+        else:
+            # Если ключ 'total' отсутствует, можно задать значение по умолчанию или обработать иначе
+            logging.warning("'total' отсутствует в одном из объектов")
+            continue
 
     filtered_df = df[(df['homeTeam'] == home_team) & (df['awayTeam'] == away_team)]
 
@@ -74,7 +74,6 @@ def predict():
 
     # Формируем ответ для текущей игры
     responses.append({'homeTeam': home_team, 'awayTeam': away_team, 'messages': messages})
-
 
     # Возвращаем список ответов для всех игр
     return jsonify(responses)
