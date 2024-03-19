@@ -44,36 +44,36 @@ def predict():
             current_away = game['away']
         # Далее ваш код, который обрабатывает current_total
 
-    filtered_df = df[(df['homeTeam'] == home_team) & (df['awayTeam'] == away_team)]
-
-    # Вычисляем статистику по фильтрованному DataFrame
-    min_total_score, max_total_score = filtered_df['totalScores'].min(), filtered_df['totalScores'].max()
-    mean_total_score = filtered_df['totalScores'].mean()
-    min_home_score, max_home_score = filtered_df['home'].min(), filtered_df['home'].max()
-    mean_home_score = filtered_df['home'].mean()
-    min_away_score, max_away_score = filtered_df['away'].min(), filtered_df['away'].max()
-    mean_away_score = filtered_df['away'].mean()
-
-    teams_for_prediction = pd.DataFrame({'awayTeam': [away_team], 'homeTeam': [home_team]})
-    encoded_teams = one_hot_encoder.transform(teams_for_prediction).toarray()
-    encoded_teams_df = pd.DataFrame(encoded_teams, columns=one_hot_encoder.get_feature_names_out())
-
-    # Делаем предсказания
-    predicted_total = model_total.predict(encoded_teams_df)[0]
-    predicted_home = model_home.predict(encoded_teams_df)[0]
-    predicted_away = model_away.predict(encoded_teams_df)[0]
-
-    # Проверяем условия для текущих и предсказанных значений
-    messages = []
-    check_extremes_and_predictions(messages, current_total, min_total_score, max_total_score, mean_total_score,
-                                   predicted_total, 'тотал')
-    check_extremes_and_predictions(messages, current_home, min_home_score, max_home_score, mean_home_score,
-                                   predicted_home, 'домашний счет')
-    check_extremes_and_predictions(messages, current_away, min_away_score, max_away_score, mean_away_score,
-                                   predicted_away, 'выездной счет')
-
-    # Формируем ответ для текущей игры
-    responses.append({'homeTeam': home_team, 'awayTeam': away_team, 'messages': messages})
+        filtered_df = df[(df['homeTeam'] == home_team) & (df['awayTeam'] == away_team)]
+    
+        # Вычисляем статистику по фильтрованному DataFrame
+        min_total_score, max_total_score = filtered_df['totalScores'].min(), filtered_df['totalScores'].max()
+        mean_total_score = filtered_df['totalScores'].mean()
+        min_home_score, max_home_score = filtered_df['home'].min(), filtered_df['home'].max()
+        mean_home_score = filtered_df['home'].mean()
+        min_away_score, max_away_score = filtered_df['away'].min(), filtered_df['away'].max()
+        mean_away_score = filtered_df['away'].mean()
+    
+        teams_for_prediction = pd.DataFrame({'awayTeam': [away_team], 'homeTeam': [home_team]})
+        encoded_teams = one_hot_encoder.transform(teams_for_prediction).toarray()
+        encoded_teams_df = pd.DataFrame(encoded_teams, columns=one_hot_encoder.get_feature_names_out())
+    
+        # Делаем предсказания
+        predicted_total = model_total.predict(encoded_teams_df)[0]
+        predicted_home = model_home.predict(encoded_teams_df)[0]
+        predicted_away = model_away.predict(encoded_teams_df)[0]
+    
+        # Проверяем условия для текущих и предсказанных значений
+        messages = []
+        check_extremes_and_predictions(messages, current_total, min_total_score, max_total_score, mean_total_score,
+                                       predicted_total, 'тотал')
+        check_extremes_and_predictions(messages, current_home, min_home_score, max_home_score, mean_home_score,
+                                       predicted_home, 'домашний счет')
+        check_extremes_and_predictions(messages, current_away, min_away_score, max_away_score, mean_away_score,
+                                       predicted_away, 'выездной счет')
+    
+        # Формируем ответ для текущей игры
+        responses.append({'homeTeam': home_team, 'awayTeam': away_team, 'messages': messages})
 
     # Возвращаем список ответов для всех игр
     return jsonify(responses)
@@ -92,3 +92,4 @@ def check_extremes_and_predictions(messages, current_value, min_value, max_value
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
+
