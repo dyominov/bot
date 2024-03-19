@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from joblib import load
 import pandas as pd
+import logging
 
 app = Flask(__name__)
 
@@ -15,6 +16,9 @@ df = pd.read_csv(file_path)
 
 threshold = 2  # Пороговое значение для сравнения экстремумов
 diff_threshold = 10  # Пороговое значение для сравнения с предсказаниями
+
+# Настройка логирования
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 @app.route('/predict', methods=['POST'])
