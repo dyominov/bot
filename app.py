@@ -92,15 +92,15 @@ def calculate_statistics(filtered_df):
         }
     }
 
-def check_extremes_and_predictions(current_value, stats, predicted_value, value_name, threshold):
+def check_extremes_and_predictions(current_value, stats, predicted_value, value_name, threshold_diff):
     messages = []
-    if abs(current_value - stats['mean']) > threshold:
+    if abs(current_value - stats['mean']) > threshold_diff:
         messages.append(f'Текущий {value_name} ({current_value}) значительно отличается от среднего ({stats["mean"]}).')
     if abs(current_value - stats['min']) <= threshold:
         messages.append(f'Текущий {value_name} ({current_value}) очень близок к минимальному значению ({stats["min"]}).')
     if abs(current_value - stats['max']) <= threshold:
         messages.append(f'Текущий {value_name} ({current_value}) очень близок к максимальному значению ({stats["max"]}).')
-    if abs(current_value - predicted_value) > threshold:
+    if abs(current_value - predicted_value) > threshold_diff:
         messages.append(f'Текущий {value_name} ({current_value}) сильно отличается от предсказанного значения ({predicted_value}).')
     return messages
 
