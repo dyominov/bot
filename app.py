@@ -15,7 +15,7 @@ file_path = 'basketball2.csv'
 df = pd.read_csv(file_path)
 
 threshold = 2  # Пороговое значение для сравнения экстремумов
-diff_threshold = 10  # Пороговое значение для сравнения с предсказаниями
+
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -66,11 +66,11 @@ def predict():
         # Проверяем условия для текущих и предсказанных значений
         messages = []
         check_extremes_and_predictions(messages, current_total, min_total_score, max_total_score, mean_total_score,
-                                       predicted_total, 'тотал')
+                                       predicted_total, 'тотал', 12)
         check_extremes_and_predictions(messages, current_home, min_home_score, max_home_score, mean_home_score,
-                                       predicted_home, 'домашний счет')
+                                       predicted_home, 'домашний счет', 9)
         check_extremes_and_predictions(messages, current_away, min_away_score, max_away_score, mean_away_score,
-                                       predicted_away, 'выездной счет')
+                                       predicted_away, 'выездной счет', 9)
     
         # Формируем ответ для текущей игры
         responses.append({'homeTeam': home_team, 'awayTeam': away_team, 'messages': messages})
@@ -79,15 +79,20 @@ def predict():
     return jsonify(responses)
 
 
-def check_extremes_and_predictions(messages, current_value, min_value, max_value, mean_value, predicted_value,
-                                   value_name):
-    """Функция для проверки текущих и предсказанных значений."""
-    if abs(current_value - mean_value) > diff_threshold or \
-            abs(current_value - min_value) <= threshold or \
-            abs(current_value - max_value) <= threshold or \
-            abs(current_value - predicted_value) > diff_threshold:
-        messages.append(
-            f'Текущий {value_name} ({current_value}) выходит за рамки нормы или сильно отличается от предсказанного ({predicted_value}).')
+def check_extremes_and_predictions(messages, current_value, min_value, max_value, mean_value, predicted_value, value_name, diff_threshold, threshold):
+    """Функция для проверки текущих и предсказанных значений и указания конкретных отличий."""
+    if abs(current_value - mean_value) > diff_threshold:
+        messages.append(f'Текущий {value_name} ({current_value}) значительно отличается от среднего ({mean_value}).')
+
+    if abs(current_value - min_value) <= threshold:
+        messages.append(f'Текущий {value_name} ({current_value}) очень близок к минимальному значению ({min_value}).')
+
+    if abs(current_value - max_value) <= threshold:
+        messages.append(f'Текущий {value_name} ({current_value}) очень близок к максимальному значению ({max_value}).')
+
+    if abs(current_value - predicted_value) > diff_threshold:
+        messages.append(f'Текущий {value_name} ({current_value}) сильно отличается от предсказанного значения ({predicted_value}).')
+
 
 
 if __name__ == "__main__":
