@@ -63,9 +63,9 @@ def predict():
 
         # Проверяем условия для текущих и предсказанных значений
         messages = []
-        messages += check_extremes_and_predictions(current_total, stats['total'], predictions['total'], 'total', threshold)
-        messages += check_extremes_and_predictions(current_home, stats['home'], predictions['home'], 'home', threshold)
-        messages += check_extremes_and_predictions(current_away, stats['away'], predictions['away'], 'away', threshold)
+        messages += check_extremes_and_predictions(current_total, stats['total'], predictions['total'], 'total', 12)
+        messages += check_extremes_and_predictions(current_home, stats['home'], predictions['home'], 'home', 9)
+        messages += check_extremes_and_predictions(current_away, stats['away'], predictions['away'], 'away', 9)
 
         # Формируем ответ для текущей игры
         responses.append({'homeTeam': home_team, 'awayTeam': away_team, 'messages': messages})
