@@ -45,8 +45,13 @@ def load_sent_messages_hashes(file_path):
         return set()
 
 def save_message_hash(file_path, message_hash):
-    with open(file_path, 'a') as file:
-        file.write(message_hash + '\n')
+    try:
+        with open(file_path, 'a') as file:
+            file.write(message_hash + '\n')
+        logging.info(f"Хэш сообщения успешно сохранён в файл: {file_path}")
+    except Exception as e:
+        logging.error(f"Ошибка при сохранении хэша сообщения: {e}")
+
 
 def is_message_unique(message_hash, sent_messages):
     if message_hash in sent_messages:
@@ -58,7 +63,7 @@ def is_message_unique(message_hash, sent_messages):
 def main():
     bot_token = "6979637911:AAERF6iIlMmzoAFgpGsxQesbJmly3RKDRxw"  # Замените на ваш токен от BotFather
     chat_id = "271084305" 
-    hashes_file_path = "sent_messages_hashes.txt"
+    hashes_file_path = "/home/ubuntu/bot/sent_messages_hashes.txt"
     
     sent_messages = load_sent_messages_hashes(hashes_file_path)
 
