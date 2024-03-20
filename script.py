@@ -37,6 +37,17 @@ def send_telegram_message(bot_token, chat_id, message):
 def generate_message_hash(message):
     return hashlib.sha256(message.encode()).hexdigest()
 
+def load_sent_messages_hashes(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            return set(file.read().splitlines())
+    except FileNotFoundError:
+        return set()
+
+def save_message_hash(file_path, message_hash):
+    with open(file_path, 'a') as file:
+        file.write(message_hash + '\n')
+
 def is_message_unique(message_hash, sent_messages):
     if message_hash in sent_messages:
         return False
@@ -47,7 +58,9 @@ def is_message_unique(message_hash, sent_messages):
 def main():
     bot_token = "6979637911:AAERF6iIlMmzoAFgpGsxQesbJmly3RKDRxw"  # Замените на ваш токен от BotFather
     chat_id = "271084305" 
-    sent_messages = set()
+    hashes_file_path = "sent_messages_hashes.txt"
+    
+    sent_messages = load_sent_messages_hashes(hashes_file_path)
 
     try:
         data_url = "https://betwinner-232507.top/service-api/LiveFeed/Get1x2_VZip?sports=3&champs=2626462&count=20&gr=495&mode=4"
@@ -72,6 +85,7 @@ def main():
                             telegram_response = send_telegram_message(bot_token, chat_id, message_text)
                             if telegram_response.get("ok"):
                                 logging.info("Сообщение успешно отправлено в Telegram.")
+                                save_message_hash(hashes_file_path, message_hash)
                             else:
                                 logging.error(f"Ошибка при отправке сообщения в Telegram: {telegram_response}")
                         else:
@@ -87,4 +101,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
