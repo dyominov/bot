@@ -68,7 +68,7 @@ def main():
     sent_messages = load_sent_messages_hashes(hashes_file_path)
 
     try:
-        data_url = "https://betwinner-232507.top/service-api/LiveFeed/Get1x2_VZip?sports=3&champs=2626462&count=20&gr=495&mode=4"
+        data_url = "https://betwinner-843475.top/service-api/LiveFeed/Get1x2_VZip?sports=3&champs=2626462&count=20&gr=495&mode=4"
         predict_url = "http://3.65.182.213:5000/predict"
         headers = {'Content-Type': 'application/json'}
 
